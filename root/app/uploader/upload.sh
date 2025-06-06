@@ -40,7 +40,7 @@ echo "{\"filedir\": \"${FILEDIR}\",\"filebase\": \"${FILEBASE}\",\"filesize\": \
 log "[Upload] Starting Upload"
 rclone moveto --tpslimit 8 --checkers=${CHECKERS} \
     --config "${rjson}" --log-file="${LOGFILE}" --log-level INFO --stats 2s \
-    --drive-chunk-size=32M --user-agent=${UAGENT}\
+    --drive-chunk-size=32M --copy-links --user-agent=${UAGENT}\
     "${FILE}" "${REMOTE}:${FILEDIR}/${FILEBASE}"
 ENDTIME=$(date +%s)
 #update json file for Uploader GUI

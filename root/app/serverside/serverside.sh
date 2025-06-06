@@ -113,7 +113,7 @@ while true; do
    touch "${LOGFILE}"
    log "Starting Server-Side move from ${REMOTEDRIVE} to ${SERVERSIDEDRIVE}"
    rclone moveto --checkers 4 --transfers 2 --config=${RCLONEDOCKER} --user-agent=${UAGENT} \
-                 --log-file="${LOGFILE}" --use-server-modtime --log-level INFO --stats 10s --no-traverse ${SERVERSIDEAGE} \
+                 --log-file="${LOGFILE}" --use-server-modtime --copy-links --log-level INFO --stats 10s --no-traverse ${SERVERSIDEAGE} \
                  --exclude="**backup**"--exclude="**plexguide/**" \
                  "${REMOTEDRIVE}:" "${SERVERSIDEDRIVE}:"
    ENDTIME=$(date +%s)

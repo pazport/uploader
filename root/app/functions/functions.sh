@@ -39,11 +39,8 @@ fi
 function rclone_update() {
 log "-> update rclone || start <-"
     apk add unzip --quiet
-wget --quiet https://github.com/morganzero/sushiclone/raw/main/sushiclone.tar.gz && \
-tar -xf  sushiclone.tar.gz -C /usr/bin/ && \
-rm -f sushiclone.tar.gz && \
-mv /usr/bin/sclone /usr/bin/rclone && \
-rm /usr/bin/sclone
+curl https://rclone.org/install.sh | bash
+
 if [[ $(command -v rclone | wc -l) == "1" ]]; then
     chown -cf abc:abc /root
 fi
