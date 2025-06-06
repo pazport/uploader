@@ -9,7 +9,7 @@ downloadpath=/mnt/downloads
 IFS=$'\n'
 FILE=$1
 GDSA=$2
-rjson=/config/rclone/rclone-docker.conf
+rjson=/config/rclone/rclone.conf
 
 if grep -q GDSA01C "${rjson}" && grep -q GDSA02C "${rjson}"; then
    DRIVE=TCRYPT
