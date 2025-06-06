@@ -1,0 +1,29 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+## function source
+function log() {
+echo "[Uploader] ${1}"
+}
+log "-> Setting Permissions || start <-"
+mkdir -p /config/{discord,env}
+folder="/mnt/downloads /config /app /var/www /run /var/lib/nginx /var/log/nginx /root"
+for i in ${folder}; do
+   chmod -R 755 $i
+   chown -hR abc:abc $i
+   chown -cf abc:abc $i
+done
+#find /config -exec chmod a=rx,u+w {} \;
+#find /config -exec chown -hR abc:abc {} \;
+#find /app -exec chmod a=rx,u+w {} \;
+#find /app -exec chown -hR abc:abc {} \;
+#find /var/www -exec chmod a=rx,u+w {} \;
+#find /var/www -exec chown -hR abc:abc {} \;
+
+#chown -R abc:abc /run \
+#          /var/lib/nginx \
+#          /var/log/nginx
+if [[ $(command -v rclone | wc -l) == "1" ]]; then
+    chown -cf abc:abc /root
+fi
+log "-> Setting Permissions || done <-"
+#EOF

@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+# shellcheck disable=SC2086
+umask 022
+command="/app/cleanup/cleanup.sh"
+sleep 10
+echo "-> Starting cleaning garbage files<-"
+exec s6-setuidgid abc $command

@@ -1,0 +1,31 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+function log() {
+echo "[UPLOADER] ${1}"
+}
+if [ ! -f "/config/rclone.conf" ]; then
+   log "-->> [ WARNING ] no rclone.conf file found [ WARNING ] <<--"
+   if [ ! -f "/config/rclone.conf" ]; then
+      log "-->> [ WARNING ] second check of rclone.conf failed [ WARNING ] <<--"
+      log "-->> [ WARNING ]    no rclone.conf file found       [ WARNING ] <<--"
+      sleep 60 && s6-svscanctl -t /var/run/s6/services
+   fi
+fi
+log "-> Copying rclone.conf <-"
+    rclonepad="/config/rclone/rclone-docker.conf"
+    mkdir -p /config/rclone
+    rm -f ${rclonepad}
+    find /config -name "rclone.conf" -type f -exec cp {} ${rclonepad} \;
+    log "-> Make needed edits to rclone-docker.conf <-"
+    sed -i "s#/opt/appdata/plexguide/.blitzkeys/#/config/keys/#g" /config/rclone/rclone-docker.conf
+    sed -i "s#/opt/appdata/uploader/#/config/keys/#g" /config/rclone/rclone-docker.conf
+    sed -i "s#/opt/appdata/services/uploader/keys/#/config/keys/#g" /config/rclone/rclone-docker.conf
+    sed -i "s#/opt/uploader/keys/#/config/keys/#g" /config/rclone/rclone-docker.conf
+    sed -i '/pgunion/{n;N;d;}' /config/rclone/rclone-docker.conf
+    sed -i '/pgunion/d' /config/rclone/rclone-docker.conf
+    sed "/^\[tdrive\].*/a service_account_file_path = /config/keys/" /config/rclone/rclone-docker.conf
+    sed "/^\[tcrypt\].*/a service_account_file_path = /config/keys/" /config/rclone/rclone-docker.conf
+log "-> rclone_docker.conf edits done <-"
+
+
+#<EOF>#
